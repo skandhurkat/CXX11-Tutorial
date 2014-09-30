@@ -24,9 +24,16 @@ void v_v_add_parallel_frag(
 	std::vector<int>& result,
 	std::vector<int>& a,
 	std::vector<int>& b,
-	size_t index)
+	size_t thread_id,
+	size_t total_size,
+	size_t num_threads)
 {
-	result[index] = a[index] + b[index];
+	size_t stride = total_size / num_threads;
+	size_t start_index = thread_id * stride;
+	size_t end_index   = (thread_id + 1) * stride;
+	for(size_t i = start_index; i < end_index and i < total_size; i++) {
+		result[i] = a[i] + b[i];
+	}
 }
 
 void v_v_add_parallel(
@@ -42,13 +49,17 @@ void v_v_add_parallel(
 
 	std::vector<std::thread> threads;
 
-	for(size_t i = 0; i < a.size(); i++) {
+	size_t num_threads = std::thread::hardware_concurrency();
+
+	for(size_t i = 0; i < num_threads; i++) {
 		threads.emplace_back(
 			v_v_add_parallel_frag,
 			std::ref(result),
 			std::ref(a),
 			std::ref(b),
-			i);
+			i,
+			a.size(),
+			num_threads);
 	}
 
 	for(auto& t:threads) {
