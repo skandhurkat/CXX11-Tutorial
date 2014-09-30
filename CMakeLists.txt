@@ -120,6 +120,12 @@ if(NOT CMAKE_COMPILER_IS_GNUCXX)
 endif()
 install(TARGETS microcounter RUNTIME DESTINATION bin)
 
+add_executable(v-v-add v-v-add.cpp)
+if(NOT CMAKE_COMPILER_IS_GNUCXX)
+  target_link_libraries(v-v-add ${CMAKE_THREAD_LIBS_INIT})
+endif()
+install(TARGETS v-v-add RUNTIME DESTINATION bin)
+
 ########################################################################
 
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY
