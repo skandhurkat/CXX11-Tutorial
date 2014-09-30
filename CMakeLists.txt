@@ -114,6 +114,8 @@ endif()
 # Add source files here                                                #
 ########################################################################
 
+add_executable(microcounter microcounter.cpp)
+
 ########################################################################
 
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY
