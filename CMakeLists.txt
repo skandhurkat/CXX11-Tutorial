@@ -118,6 +118,7 @@ add_executable(microcounter microcounter.cpp)
 if(NOT CMAKE_COMPILER_IS_GNUCXX)
   target_link_libraries(microcounter ${CMAKE_THREAD_LIBS_INIT})
 endif()
+install(TARGETS microcounter RUNTIME DESTINATION bin)
 
 ########################################################################
 
