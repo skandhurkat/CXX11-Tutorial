@@ -2,11 +2,12 @@
 #include <thread>
 #include <vector>
 #include <mutex>
+#include <functional>
 
-unsigned int counter = 0;
-std::mutex counter_lock;
+void increment(
+	unsigned int& counter,
+	std::mutex& counter_lock) {
 
-void increment(void) {
 	counter_lock.lock();
 	counter++;
 	counter_lock.unlock();
@@ -14,10 +15,16 @@ void increment(void) {
 
 int main(void) {
 
+	unsigned int counter = 0;
+	std::mutex counter_lock;
+
 	std::vector<std::thread> threads;
 
 	for(unsigned int i = 0; i < 8; i++) {
-		threads.emplace_back(increment);
+		threads.emplace_back(
+			increment,
+			std::ref(counter),
+			std::ref(counter_lock));
 	}
 
 	for(auto& t: threads) {
