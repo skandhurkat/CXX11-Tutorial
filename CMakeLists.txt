@@ -60,7 +60,7 @@ if(CMAKE_COMPILER_IS_GNUCXX)
   if(CMAKE_CXX_COMPILER_VERSION GREATER 4.7 OR
      CMAKE_CXX_COMPILER_VERSION EQUAL 4.7)
     option(ENABLE_PROFILING "Enables the profiling flag in debug mode" OFF)
-    set(CMAKE_CXX_FLAGS "-std=c++11 -pedantic -Wall -Wextra")
+    set(CMAKE_CXX_FLAGS "-std=c++11 -pedantic -Wall -Wextra -pthread")
     set(CMAKE_CXX_FLAGS_DEBUG "-Og -g")
     set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g")
     set(CMAKE_CXX_FLAGS_RELEASE "-Ofast")
@@ -115,6 +115,9 @@ endif()
 ########################################################################
 
 add_executable(microcounter microcounter.cpp)
+if(NOT CMAKE_COMPILER_IS_GNUCXX)
+  target_link_libraries(microcounter ${CMAKE_THREAD_LIBS_INIT})
+endif()
 
 ########################################################################
 
